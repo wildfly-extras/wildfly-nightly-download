@@ -5,9 +5,14 @@
   "main": "main.js",
   "type": "module",
   "scripts": {
-    "format": "prettier --no-error-on-unmatched-pattern --config ./.prettierrc.cjs --write \"**/*.{js,yml,yaml}\"",
-    "format-check": "prettier --no-error-on-unmatched-pattern --config ./.prettierrc.cjs --check \"**/*.{js,yml,yaml}\"",
+    "build": "npm run format:write && npm run package",
+    "format:write": "prettier --no-error-on-unmatched-pattern --config ./.prettierrc.cjs --write \"**/*.{js,yml,yaml}\"",
+    "format:check": "prettier --no-error-on-unmatched-pattern --config ./.prettierrc.cjs --check \"**/*.{js,yml,yaml}\"",
+    "package": "npx ncc build src/main.js -o dist",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "exports": {
+    ".": "./dist/main.js"
   },
   "author": "James R. Perkins",
   "license": "Apache-2.0",
@@ -16,6 +21,7 @@
     "@actions/tool-cache": "^2.0.1"
   },
   "devDependencies": {
+    "@vercel/ncc": "^0.38.2",
     "prettier": "^3.3.3"
   }
 }
