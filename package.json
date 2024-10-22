@@ -1,0 +1,23 @@
+{
+  "name": "org.wildfly.download.action",
+  "version": "1.0.0",
+  "description": "A GitHub Action to download a nightly build of WildFly or the nightly Maven Repository",
+  "main": "main.js",
+  "type": "module",
+  "scripts": {
+    "format": "prettier --no-error-on-unmatched-pattern --config ./.prettierrc.cjs --write \"**/*.{js,yml,yaml}\"",
+    "format-check": "prettier --no-error-on-unmatched-pattern --config ./.prettierrc.cjs --check \"**/*.{js,yml,yaml}\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "James R. Perkins",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@actions/core": "^1.11.1",
+    "@octokit/action": "^7.0.0",
+    "@octokit/core": "^6.1.2",
+    "tar": "^7.4.3"
+  },
+  "devDependencies": {
+    "prettier": "^3.3.3"
+  }
+}

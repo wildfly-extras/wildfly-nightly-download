@@ -1,0 +1,14 @@
+name: "Download WildFly Nightly Maven Repository"
+description: "Downloads WildFly the latest nightly build of the WildFly Maven Repository"
+author: "James R. Perkins"
+inputs:
+    uri:
+        description: "The URI to download the archive from"
+        required: true
+        default: "https://ci.wildfly.org/guestAuth/repository/download/WF_Nightly/latest.lastSuccessful/wildfly-maven-repository.tar.gz"
+outputs:
+    wildfly-version:
+        description: "The version of WildFly downloaded for provisioning"
+runs:
+    using: "node20"
+    main: "src/index.js"
