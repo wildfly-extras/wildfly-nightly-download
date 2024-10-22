@@ -13,9 +13,9 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@actions/core": "^1.11.1",
+    "@actions/tool-cache": "^2.0.1",
     "@octokit/action": "^7.0.0",
-    "@octokit/core": "^6.1.2",
-    "tar": "^7.4.3"
+    "@octokit/core": "^6.1.2"
   },
   "devDependencies": {
     "prettier": "^3.3.3"

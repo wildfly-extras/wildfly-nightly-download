@@ -3,8 +3,8 @@ import http from "http";
 import fs from "fs";
 import path from "path";
 import os from "os";
-import * as tar from "tar";
 import core from "@actions/core";
+import * as tc from "@actions/tool-cache";
 
 const downloadPath = `${os.tmpdir}/wildfly-maven-repository.tar.gz`;
 
@@ -14,7 +14,7 @@ function createDirectory(dir) {
         createDirectory(parent);
     }
 
-    fs.mkdirSync(dir, { recursive: true });
+    fs.mkdirSync(dir, {recursive: true});
 }
 
 async function download(callback) {
@@ -24,7 +24,7 @@ async function download(callback) {
 
     const file = fs.createWriteStream(downloadPath);
     const handler = response => {
-        const { statusCode } = response;
+        const {statusCode} = response;
         if (statusCode != 200) {
             throw new Error(`Failed to download ${downloadUri}\nStatus Code: ${statusCode}`);
         }
@@ -54,13 +54,10 @@ async function download(callback) {
     }
 }
 
-async function extract(tarName) {
-    console.log(`Extracting ${tarName}`);
-    return tar
-        .x({
-            file: tarName,
-            cwd: target
-        })
+async function extract(tarName, target) {
+    console.log(`Extracting ${tarName} to ${target}`);
+    return await tc
+        .extractTar(tarName, target)
         .then(() => {
             console.log("Extraction complete");
         })
@@ -70,9 +67,9 @@ async function extract(tarName) {
         });
 }
 
-function extractDownload() {
-    extract(downloadPath).then(() => {
-        extract(target + "/" + path.basename(downloadPath)).then(() => {
+function extractDownload(target) {
+    extract(downloadPath, target).then(() => {
+        extract(target + "/" + path.basename(downloadPath), target).then(() => {
             // Delete the old TAR
             fs.unlinkSync(downloadPath);
             fs.readFile(target + "/version.txt", (err, data) => {
@@ -98,10 +95,10 @@ try {
 
     if (!fs.existsSync(downloadPath)) {
         download(() => {
-            extractDownload();
+            extractDownload(target);
         });
     } else {
-        extractDownload();
+        extractDownload(target);
     }
 } catch (error) {
     core.setFailed(error.message);
