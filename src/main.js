@@ -18,9 +18,9 @@ function createDirectory(dir) {
 }
 
 async function download(callback) {
-    //const downloadUri = core.getInput("uri");
-    const downloadUri =
-        "https://ci.wildfly.org/guestAuth/repository/download/WF_Nightly/latest.lastSuccessful/wildfly-maven-repository.tar.gz";
+    const downloadUri = core.getInput("uri");
+    //const downloadUri =
+    //    "https://ci.wildfly.org/guestAuth/repository/download/WF_Nightly/latest.lastSuccessful/wildfly-maven-repository.tar.gz";
 
     const file = fs.createWriteStream(downloadPath);
     const handler = response => {
