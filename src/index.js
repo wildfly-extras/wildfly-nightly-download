@@ -25,7 +25,7 @@ async function download(callback) {
     const file = fs.createWriteStream(downloadPath);
     const handler = response => {
         const {statusCode} = response;
-        if (statusCode != 200) {
+        if (statusCode !== 200) {
             throw new Error(`Failed to download ${downloadUri}\nStatus Code: ${statusCode}`);
         }
         const contentType = response.headers["content-type"];
