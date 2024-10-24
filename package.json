@@ -1,6 +1,6 @@
 {
   "name": "wildfly-nightly-download",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A GitHub Action to download a nightly build of WildFly or the nightly Maven Repository",
   "main": "index.js",
   "type": "module",
