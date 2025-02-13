@@ -6,8 +6,8 @@
   "type": "module",
   "scripts": {
     "build": "npm run format:write && npm run package",
-    "format:write": "prettier --no-error-on-unmatched-pattern --config ./.prettierrc.cjs --write \"**/*.{js,yml,yaml}\"",
-    "format:check": "prettier --no-error-on-unmatched-pattern --config ./.prettierrc.cjs --check \"**/*.{js,yml,yaml}\"",
+    "format:write": "prettier --no-error-on-unmatched-pattern --config ./.prettierrc.cjs --write \"**/src/*.{js,yml,yaml}\"",
+    "format:check": "prettier --no-error-on-unmatched-pattern --config ./.prettierrc.cjs --check \"**/src/*.{js,yml,yaml}\"",
     "package": "npx ncc build src/index.js -m -o dist/",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
