@@ -32,3 +32,18 @@ steps:
   - name: Build and Test on ${{ matrix.os }} - ${{ matrix.java }} with WildFly ${{steps.wildfly-nightly.outputs.wildfly-version}}
     run: mvn clean verify '-Dversion.org.wildfly=${{steps.wildfly-nightly.outputs.wildfly-version}}'
 ----
+
+== Building
+
+To build this project you simply need to run:
+
+[source,bash]
+----
+npm run build
+----
+
+== Releasing
+
+Releasing is simply done by building the project with the build command above. Then committing the content required.
+Once that is completely, simply create a new tag. Finally, update the version in the `package.json`.
+
