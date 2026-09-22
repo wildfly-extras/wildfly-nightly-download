@@ -1,15 +1,17 @@
 {
   "name": "wildfly-nightly-download",
-  "version": "1.0.2",
+  "version": "2.0.0",
   "description": "A GitHub Action to download a nightly build of WildFly or the nightly Maven Repository",
   "main": "index.js",
   "type": "module",
   "scripts": {
     "build": "npm run format:write && npm run package",
-    "format:write": "prettier --no-error-on-unmatched-pattern --config ./.prettierrc.cjs --write \"**/src/*.{js,yml,yaml}\"",
-    "format:check": "prettier --no-error-on-unmatched-pattern --config ./.prettierrc.cjs --check \"**/src/*.{js,yml,yaml}\"",
+    "format:write": "prettier --no-error-on-unmatched-pattern --config ./.prettierrc.cjs --write \"{src,test}/**/*.js\" \".github/workflows/*.{yml,yaml}\"",
+    "format:check": "prettier --no-error-on-unmatched-pattern --config ./.prettierrc.cjs --check \"{src,test}/**/*.js\" \".github/workflows/*.{yml,yaml}\"",
     "package": "npx ncc build src/index.js -m -o dist/",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "verify:dist": "npm run package && git diff --stat --exit-code -- dist/",
+    "test": "node --test",
+    "run:local": "INPUT_URI=${INPUT_URI:-https://ci.wildfly.org/guestAuth/repository/download/WF_Nightly/latest.lastSuccessful/wildfly-maven-repository.tar.gz} INPUT_PATH=${INPUT_PATH:-$(mktemp -d)} node src/index.js"
   },
   "exports": {
     ".": "./dist/index.js"

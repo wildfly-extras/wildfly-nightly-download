@@ -6,5 +6,11 @@ module.exports = {
   singleQuote: false,
   trailingComma: 'none',
   bracketSpacing: false,
-  arrowParens: 'avoid'
+  arrowParens: 'avoid',
+  overrides: [
+    {
+      files: ['*.yml', '*.yaml'],
+      options: {tabWidth: 2}
+    }
+  ]
 };

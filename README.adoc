@@ -7,9 +7,9 @@ and directories.
 
 == Usage
 
-Currently, this provides a single input parameter that should like not be changed.
-
 * `uri`: The URI of the TAR to download. Defaults to https://ci.wildfly.org/guestAuth/repository/download/WF_Nightly/latest.lastSuccessful/wildfly-maven-repository.tar.gz
+  and should likely not be changed.
+* `path`: The directory to extract the Maven repository into. Defaults to `~/.m2/repository`.
 
 It includes a single output parameter which is the version of the downloaded artifacts.
 
@@ -42,8 +42,48 @@ To build this project you simply need to run:
 npm run build
 ----
 
+The compiled `dist/index.js` is committed to the repository, since GitHub Actions runs it directly with no install or
+build step of its own. CI verifies `dist/` is up to date on every PR by rebuilding and diffing it, so any change to
+`src/` must be accompanied by a rebuilt, committed `dist/index.js`. You can run the same check locally with:
+
+[source,bash]
+----
+npm run verify:dist
+----
+
+== Testing
+
+Unit tests use Node's built-in test runner and require no additional dependencies. Run them with:
+
+[source,bash]
+----
+npm test
+----
+
+Unit tests do not exercise the real download, since that requires network access to WildFly's CI server and would make
+the suite flaky. To manually smoke test against the real server:
+
+[source,bash]
+----
+INPUT_URI="https://ci.wildfly.org/guestAuth/repository/download/WF_Nightly/latest.lastSuccessful/wildfly-maven-repository.tar.gz" \
+INPUT_PATH=$(mktemp -d) \
+node src/index.js
+----
+
+`INPUT_PATH` sandboxes the extracted repository into a throwaway directory instead of `~/.m2/repository`.
+
 == Releasing
 
-Releasing is simply done by building the project with the build command above. Then committing the content required.
-Once that is completely, simply create a new tag. Finally, update the version in the `package.json`.
+Releasing is done via the "Release" GitHub Actions workflow (`.github/workflows/release.yml`), triggered manually
+from the Actions tab or with `gh workflow run release.yml -f version=2.0.0`.
+
+Given a `version` input, the workflow:
+
+* Tags the current `main` commit `vX.Y.Z` and force-moves the floating major tag (e.g. `v2`) to it, since consumers
+  pin to the major tag.
+* Creates a GitHub release from that tag.
+* Opens a PR bumping `package.json`/`package-lock.json` to the next development version (an auto patch bump, or the
+  `next-version` input if provided). Merge that PR to start the next development cycle.
+
+The workflow assumes `dist/` on `main` is already up to date, which CI enforces on every PR.
 
