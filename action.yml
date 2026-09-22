@@ -6,9 +6,12 @@ inputs:
         description: "The URI to download the archive from"
         required: true
         default: "https://ci.wildfly.org/guestAuth/repository/download/WF_Nightly/latest.lastSuccessful/wildfly-maven-repository.tar.gz"
+    path:
+        description: "The directory to extract the Maven repository into. Defaults to ~/.m2/repository"
+        required: false
 outputs:
     wildfly-version:
         description: "The version of WildFly downloaded for provisioning"
 runs:
-    using: "node20"
+    using: "node24"
     main: "dist/index.js"
